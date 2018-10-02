@@ -138,8 +138,8 @@ nav.navbar{
   margin-right: 15px;
 }
 .custom-table td, .custom-table th{
-  padding-top:10px !important; 
-  padding-bottom:10px !important; 
+  padding-top:8px !important; 
+  padding-bottom:8px !important; 
 }
 .custom-card-header{
   padding-top: 5px !important;
