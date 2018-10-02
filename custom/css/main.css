@@ -23,6 +23,7 @@
 body{
   font-size: 0.9em !important;
   background-color:rgba(0,0,0,0.03);
+  overflow-x: hidden;
   
 }
 
