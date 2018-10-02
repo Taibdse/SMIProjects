@@ -141,9 +141,19 @@ async function showInOutModal(user){
   let sentData = { sLogicalCode };
   let arrInOutList = await UserService.getUserInOut(sentData);
   if(!arrInOutList) return AlertService.showAlertError('Không có dữ liệu', '', 5000);
+  showUserInfoOnModal(user);
   renderTblInOutList(arrInOutList);
   $modalInOutList.modal('show');
+}
 
+function showUserInfoOnModal(user){
+  let { sLogicalCode, sDepartmentName, sLastName, sFirstName, sSuperDepartmentName, sPositionName, sIdNumber } = user;
+  let fullname = sFirstName + ' ' + sLastName;
+  $('.fullname').text(fullname);
+  $('.idNum').text(sIdNumber);
+  $('.pos').text(sPositionName);
+  $('.dep').text(sDepartmentName);
+  $('.superDep').text(sSuperDepartmentName);
 }
 
 function renderTblInOutList(data){
@@ -154,7 +164,6 @@ function renderTblInOutList(data){
     `
     <tr>
       <th>STT</th>
-      <th>Họ tên</th>
       <th>Thời gian ra vào</th>
       <th>SMI</th>
     </tr>
@@ -162,12 +171,10 @@ function renderTblInOutList(data){
   )
   if(data){
     data.forEach((item, index) => {
-      let { DateTimeInOut, RefLecteur, SMI, sFirstName } = item;
-      let fullname = sFirstName + ' ' + RefLecteur;
+      let { DateTimeInOut, SMI } = item;
       $tbody.append(`
         <tr>
           <td>${index + 1}</td>
-          <td>${fullname}</td>
           <td>${DateTimeInOut}</td>
           <td>${SMI}</td>
         </tr>
@@ -195,11 +202,11 @@ function renderUsersTbl(data) {
     `
     <tr>
       <th class="font-weight-bold">STT</th>
-      <th class="font-weight-bold">Mã nhân viên</th>
       <th class="font-weight-bold">Họ và tên</th>
-      <th class="font-weight-bold">Vụ</th>
-      <th class="font-weight-bold">Phòng ban</th>
+      <th class="font-weight-bold">Mã nhân viên</th>
       <th class="font-weight-bold">Chức vụ</th>
+      <th class="font-weight-bold">Phòng ban</th>
+      <th class="font-weight-bold">Vụ</th>
       <th class="font-weight-bold"></th>
     </tr>
     `
@@ -211,11 +218,11 @@ function renderUsersTbl(data) {
       $tbody.append(`
         <tr>
           <td>${index + 1}</td>
-          <td>${sIdNumber}</td>
           <td>${fullname}</td>
-          <td>${sSuperDepartmentName}</td>
-          <td>${sDepartmentName}</td>
+          <td>${sIdNumber}</td>
           <td>${sPositionName}</td>
+          <td>${sDepartmentName}</td>
+          <td>${sSuperDepartmentName}</td>
           <td>
             <button class="btn btn-custom btn-view-inout border-radius-custom" style="margin-right: 5px; text-transform: none;background-color: #6785b2">Xem ra vào</button>
             <button class="btn btn-custom btn-update border-radius-custom" style="text-transform: none; background-color: #353e4c">Cập nhật</button>

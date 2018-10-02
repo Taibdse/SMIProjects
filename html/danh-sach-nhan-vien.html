@@ -105,14 +105,15 @@
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-12">
+                    <button class="btn btn-custom pull-right border-radius-custom" id="btnPrintUserList" style="background-color: #4a5972; text-transform: none">In danh sách nhân viên</button>
+                  </div>
+                </div>
                 <div class="table-responsive" id="usersListArea">
                     
                 </div>
-                <div class="row">
-                  <div class="col-12">
-                    <button class="btn btn-custom pull-right border-radius-custom" id="btnPrintUserList" style="background-color: #4a5972;">In danh sách nhân viên</button>
-                  </div>
-                </div>
+                
                 <!-- pagination -->
                 <div class="row my-3">
                   <div class="col-sm-4">
@@ -207,6 +208,28 @@
             </div>
             <div class="modal-body">
               <div class="row">
+                <div class="col-12">
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <strong>Họ tên: </strong> <span class="fullname"></span>
+                    </li>
+                    <li class="list-group-item">
+                      <strong>Mã nhân viên: </strong> <span class="idNum"></span>
+                    </li>
+                    <li class="list-group-item">
+                      <strong>Chức vụ: </strong> <span class="pos"></span>
+                    </li>
+                    
+                    <li class="list-group-item">
+                      <strong>Phòng ban: </strong> <span class="dep"></span>
+                    </li>
+                    <li class="list-group-item">
+                      <strong>Vụ: </strong> <span class="superDep"></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row mt-3">
                 <div class="col-12">
                   <div class="table-responsive">
                     <table class="table table-hover table-striped table-condensed text-center custom-table" id="tblInOutList">

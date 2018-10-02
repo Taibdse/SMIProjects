@@ -6,7 +6,13 @@ $(async () => {
     console.log(data.selected);
   });
 
-  $btnViewAttendance.click(showAttendance);
+  $btnViewAttendance.click(() => {
+    currentReportType = $selectReportType.val();
+    if(currentReportType == 1) return showAttendanceInOutTime();
+    if(currentReportType == 2) return showAttendanceWorkMoreTime();
+    if(currentReportType == 3) return showAttendanceLateSoon();
+  });
+
   $btnPrintAttendance.click(printAttendanceData);
   $selectSuperDep.change(e => {
     showDepList(e);
@@ -19,29 +25,29 @@ $(async () => {
 
   SelectComponent.renderMonths();
 
-  $txtEndTime.val('17:00');
-  $txtStartTime.val('08:00');
+  $txtLateMin.val('15');
   $txtYear.val(new Date().getFullYear());
   $selectMonth.val(new Date().getMonth() + 1);
   
   showDepListJustAll();
   SelectComponent.renderPosition();
   SelectComponent.renderSuperDepartment(null, true);
-  showAttendance();
+  showAttendanceInOutTime();
+
 })
 
 let $selectSuperDep = $('#selectSuperDep');
 let $selectDep = $('#selectDep');
 let $selectMonth = $('#selectMonth');
-let $txtEndTime = $('#txtEndTime');
-let $txtStartTime = $('#txtStartTime');
+let $txtLateMin = $('#txtLateMin');
 let $txtYear = $('#txtYear');
 let $btnPrintAttendance = $('#btnPrintAttendance');
 let $btnViewAttendance = $('#btnViewAttendance');
+let $selectReportType = $('#selectReportType');
 
 let arrOnSites = [];
 let arrFilteredOnSites = [];
-
+let currentReportType = 1;
 
 function filterUserData(filterByDep){
   let depID = $selectDep.val();
@@ -62,80 +68,6 @@ function showDepList(e, className){
   if(superDepID == 0) return showDepListJustAll();
   let sentData = {iSuperDepartmentID: superDepID};
   SelectComponent.renderDepartment(sentData, className);
-}
-
-function renderTblAttendance(data) {
-  let $table = $(`<table class="table custom-table"></table>`)
-  let $thead = $('<thead></thead>');
-  let $tbody = $('<tbody></tbody>');
-  renderTheadAttendance($thead);
-  if(data) renderTbodyAttendance(data, $tbody);
-
-  $table.append($thead).append($tbody);
-  return $table;
-}
-
-function renderTheadAttendance($thead){
-  $thead.html(
-    `
-      <tr>
-        <th class="trn">STT</th>
-        <th class="trn">Họ Tên</th>
-        <th>Ra vào</th>
-      </tr>
-    `
-  )
-  let m = +$selectMonth.val();
-  let y = +$txtYear.val();
-  let arrMonthHeaders = TimeService.getDayInMonth(m, y);
-  arrMonthHeaders.forEach(item => {
-    let className = getClassNameHighLightCol(y, m, item);
-    $thead.find('tr').append(`<th class=${className}>${item}</th>`);
-  })
-}
-
-function renderTbodyAttendance(data, $tbody){
-  let m = +$selectMonth.val();
-  let y = +$txtYear.val();
-  data.forEach((item, index) => {
-    let user = JSON.parse(item.TimeAttendanceAll);
-
-    let { sLogicalCode, sFullname, Attendance } = user;
-    let arrInOut = getInOutArr(Attendance);
-    let startStr = $txtStartTime.val();
-    let endStr = $txtEndTime.val();
-    $tbody.append(`
-      <tr>
-        <td rowspan="2">${index + 1}</td>
-        <td rowspan="2">${sFullname} <br> ${sLogicalCode}</td>
-        <td>Đi trễ</td>
-      </tr>
-    `)
-    arrInOut.forEach((item, index) => {
-      let val = '';
-      if(item.dTimeIN)  {
-        val = getTimeSpanString(item.dTimeIN, startStr);
-        if(!val) val = '';
-      }
-      let className = getClassNameHighLightCol(y, m, index + 1);
-      $tbody.find('tr').last().append(`<td class="${className}">${val}</td>`)
-    })
-
-    $tbody.append(`
-      <tr>
-        <td>Về sớm</td>
-      </tr>
-    `)
-    arrInOut.forEach((item, index) => {
-      let val = '';
-      if(item.dTimeOUT)  {
-        val = getTimeSpanString(endStr, item.dTimeOUT);
-        if(!val) val = '';
-      }
-      let className = getClassNameHighLightCol(y, m, index + 1);
-      $tbody.find('tr').last().append(`<td class="${className}">${val}</td>`)
-    })
-  })
 }
 
 function getClassNameHighLightCol(y, m, d){
@@ -193,27 +125,19 @@ function getTimeStringFromSeconds(sec){
   return (h >= 10 ? h : `0${h}`) + ':' + (m >= 10 ? m : `0${m}`);
 }
 
-async function showAttendance() {
-  let iMonth = $('#selectMonth').val();
-  let iYear = $('#txtYear').val();
-  let startStr = $txtStartTime.val();
-  let endStr = $txtEndTime.val();
+async function getDataAttendance(){
+  let iMonth = $selectMonth.val();
+  let iYear = $txtYear.val();
+  let lateMin = $txtLateMin.val();
   
   if(!ValidationService.checkPositiveNumber(iYear)) return AlertService.showAlertError('Năm không hợp lệ', '', 5000);
 
-  let { valid, errMsg } = checkTimeInOutInput(startStr, endStr);
-  if(!valid) return AlertService.showAlertError('Thời gian làm không đúng', errMsg);
+  if(!ValidationService.checkPositiveNumber(lateMin)) return AlertService.showAlertError('Phút tính đi muộn không đúng', 'Vui lòng nhập lại', 5000);
   
   let sentData = { iMonth, iYear };
-  arrOnSites = await UserService.getAttendance(sentData);
-  console.log(arrOnSites);
-  
-  if(!arrOnSites) {
-    AlertService.showAlertError('Không có dữ liệu', '', 4000);
-    arrFilteredOnSites = [];
-  }
-  else arrFilteredOnSites = arrOnSites.slice();
-  showPagination(arrOnSites);
+  let data = await UserService.getAttendance(sentData);
+  console.log(data);
+  return data;
 }
 
 function checkTimeInOutInput(start, end){
@@ -230,7 +154,211 @@ function checkTimeInOutInput(start, end){
   return { valid, errMsg };
 }
 
-function showPagination(data){
+// Tbl In Late Soon
+async function showAttendanceLateSoon() {
+  arrOnSites = await getDataAttendance();
+  if(!arrOnSites) {
+    AlertService.showAlertError('Không có dữ liệu', '', 4000);
+    arrFilteredOnSites = [];
+  }
+  else arrFilteredOnSites = arrOnSites.slice();
+  showPagination(arrOnSites, 3);
+}
+
+function renderTblAttendance(data) {
+  let $table = $(`<table class="table custom-table"></table>`)
+  let $thead = $('<thead></thead>');
+  let $tbody = $('<tbody></tbody>');
+  renderTheadAttendance($thead);
+  if(data) renderTbodyAttendance(data, $tbody);
+
+  $table.append($thead).append($tbody);
+  return $table;
+}
+
+function renderTheadAttendance($thead){
+  $thead.html(
+    `
+      <tr>
+        <th class="trn">STT</th>
+        <th class="trn">Họ Tên</th>
+        <th>Ra vào</th>
+      </tr>
+    `
+  )
+  let m = +$selectMonth.val();
+  let y = +$txtYear.val();
+  let arrMonthHeaders = TimeService.getDayInMonth(m, y);
+  arrMonthHeaders.forEach(item => {
+    let className = getClassNameHighLightCol(y, m, item);
+    $thead.find('tr').append(`<th class=${className}>${item}</th>`);
+  })
+}
+
+function renderTbodyAttendance(data, $tbody){
+  let m = +$selectMonth.val();
+  let y = +$txtYear.val();
+  data.forEach((item, index) => {
+    let user = JSON.parse(item.TimeAttendanceAll);
+
+    let { sLogicalCode, sFullname, Attendance } = user;
+    let arrInOut = getInOutArr(Attendance);
+    let lateMin = Math.floor($txtLateMin.val()) + '';
+    let startStr = `08:${lateMin}`;
+    let endStr = `17:00`;
+
+    $tbody.append(`
+      <tr>
+        <td rowspan="2">${index + 1}</td>
+        <td rowspan="2">${sFullname} <br> ${sLogicalCode}</td>
+        <td>Đi trễ</td>
+      </tr>
+    `)
+
+    arrInOut.forEach((item, index) => {
+      let val = '';
+      if(item.dTimeIN)  {
+        val = getTimeSpanString(item.dTimeIN, startStr);
+        if(!val) val = '';
+      }
+      let className = getClassNameHighLightCol(y, m, index + 1);
+      $tbody.find('tr').last().append(`<td class="${className}">${val}</td>`)
+    })
+
+    $tbody.append(`
+      <tr>
+        <td>Về sớm</td>
+      </tr>
+    `)
+    arrInOut.forEach((item, index) => {
+      let val = '';
+      if(item.dTimeOUT)  {
+        val = getTimeSpanString(endStr, item.dTimeOUT);
+        if(!val) val = '';
+      }
+      let className = getClassNameHighLightCol(y, m, index + 1);
+      $tbody.find('tr').last().append(`<td class="${className}">${val}</td>`)
+    })
+  })
+}
+
+// Tbl In Out Time
+async function showAttendanceInOutTime(){
+  arrOnSites = await getDataAttendance();
+  if(!arrOnSites) {
+    AlertService.showAlertError('Không có dữ liệu', '', 4000);
+    arrFilteredOnSites = [];
+  }
+  else arrFilteredOnSites = arrOnSites.slice();
+  showPagination(arrOnSites, 1);
+}
+
+function renderTblAttendanceInOutTime(data) {
+  let $table = $(`<table class="table custom-table"></table>`)
+  let $thead = $('<thead></thead>');
+  let $tbody = $('<tbody></tbody>');
+  renderTheadAttendance($thead);
+  if(data) renderTbodyAttendanceInOutTime(data, $tbody);
+
+  $table.append($thead).append($tbody);
+  return $table;
+}
+
+function renderTbodyAttendanceInOutTime(data, $tbody){
+  let m = +$selectMonth.val();
+  let y = +$txtYear.val();
+  data.forEach((item, index) => {
+    let user = JSON.parse(item.TimeAttendanceAll);
+
+    let { sLogicalCode, sFullname, Attendance } = user;
+    let arrInOut = getInOutArr(Attendance);
+
+    $tbody.append(`
+      <tr>
+        <td rowspan="2">${index + 1}</td>
+        <td rowspan="2">${sFullname} <br> ${sLogicalCode}</td>
+        <td>Đi trễ</td>
+      </tr>
+    `)
+    
+    arrInOut.forEach((item, index) => {
+      let { dTimeIN } = item;
+      let val = dTimeIN ? dTimeIN : '';
+      let className = getClassNameHighLightCol(y, m, index + 1);
+      $tbody.find('tr').last().append(`<td class="${className}">${val}</td>`)
+    })
+
+    $tbody.append(`<tr><td>Về sớm</td></tr>`)
+    arrInOut.forEach((item, index) => {
+      let { dTimeOUT } = item;
+      let val = dTimeOUT ? dTimeOUT : '';
+      let className = getClassNameHighLightCol(y, m, index + 1);
+      $tbody.find('tr').last().append(`<td class="${className}">${val}</td>`)
+    })
+  })
+}
+
+
+//Tbl Work more time
+async function showAttendanceWorkMoreTime(){
+  arrOnSites = await getDataAttendance();
+  if(!arrOnSites) {
+    AlertService.showAlertError('Không có dữ liệu', '', 4000);
+    arrFilteredOnSites = [];
+  }
+  else arrFilteredOnSites = arrOnSites.slice();
+  showPagination(arrOnSites, 2);
+}
+
+function renderTblAttendanceWorkMoreTime(data) {
+  let $table = $(`<table class="table custom-table"></table>`)
+  let $thead = $('<thead></thead>');
+  let $tbody = $('<tbody></tbody>');
+  renderTheadAttendance($thead);
+  if(data) renderTbodyAttendanceWorkMoreTime(data, $tbody);
+
+  $table.append($thead).append($tbody);
+  return $table;
+}
+
+function renderTbodyAttendanceWorkMoreTime(data, $tbody){
+  let m = +$selectMonth.val();
+  let y = +$txtYear.val();
+  data.forEach((item, index) => {
+    let user = JSON.parse(item.TimeAttendanceAll);
+
+    let { sLogicalCode, sFullname, Attendance } = user;
+    let arrInOut = getInOutArr(Attendance);
+    let endStr = `18:00`;
+
+    $tbody.append(`
+      <tr>
+        <td>${index + 1}</td>
+        <td>${sFullname} <br> ${sLogicalCode}</td>
+        <td>Làm thêm giờ</td>
+      </tr>
+    `)
+
+    arrInOut.forEach((item, index) => {
+      let val = '';
+      if(item.dTimeOUT)  {
+        val = getTimeSpanString(item.dTimeOUT, endStr);
+        if(!val) val = '';
+      }
+      let className = getClassNameHighLightCol(y, m, index + 1);
+      $tbody.find('tr').last().append(`<td class="${className}">${val}</td>`)
+    })
+  })
+}
+
+//pagination
+function clearPagination(){
+  $('#pagingTotal').html('');
+  $('#pagingControl').html('');
+  $('#chamCongArea').html('');
+}
+
+function showPagination(data, type){
   if(!data) return clearPagination();
   $('#pagingTotal').html(`<strong>Tổng số nhân viên:</strong> ${data.length}`)
   $('#pagingControl').pagination({
@@ -239,21 +367,21 @@ function showPagination(data){
     showGoInput: true,
     showGoButton: true,
     callback: function (data, pagination) {
-      let $table = renderTblAttendance(data);
+      let $table;
+      console.log(123);
+      if(type == 1) $table = renderTblAttendanceInOutTime(data);
+      if(type == 2) $table = renderTblAttendanceWorkMoreTime(data);
+      if(type == 3) $table = renderTblAttendance(data);
       $('#chamCongArea.table-responsive').html($table);
     }
   })
 }
 
-function clearPagination(){
-  $('#pagingTotal').html('');
-  $('#pagingControl').html('');
-  $('#chamCongArea').html('');
-}
-
 function printAttendanceData(){
   if(!arrFilteredOnSites || arrFilteredOnSites.length == 0) return AlertService.showAlertError('Không có dữ liệu để in', '', 5000);
-  let $table = renderTblAttendance(arrFilteredOnSites);
+  let $table, arrTemp = arrFilteredOnSites;
+  if(currentReportType == 1) $table = renderTblAttendanceInOutTime(arrTemp)
+  if(currentReportType == 3) $table = renderTblAttendance(arrTemp);
   let filename = "danh-sach-cham-cong";
   Export2ExcelService.export2Excel($table, filename);
 }

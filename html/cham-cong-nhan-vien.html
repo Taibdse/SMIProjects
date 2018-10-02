@@ -27,6 +27,9 @@
   <!-- main view custom css -->
   <link rel="stylesheet" href="../custom/css/main.css">
   <style>
+    #chamCongArea table{
+      margin-top: 5px!important;
+    }
     #chamCongArea table th, #chamCongArea table td{
       border: 2px solid #ccc!important;
     }
@@ -113,21 +116,17 @@
                     <div class="form-group">
                       <div class="row">
                         <div class="col">
-                          <label class="font-weight-bold">Bắt đầu</label>
-                          <input type="text" class="form-control form-control-sm custom-input" placeholder="hh:mm" id="txtStartTime">
-                        </div>
-                        <div class="col">
-                          <label class="font-weight-bold">Kết thúc</label>
-                          <input type="text" class="form-control form-control-sm custom-input" placeholder="hh:mm" id="txtEndTime">
+                          <label class="font-weight-bold">Phút tính đi muộn</label>
+                          <input type="text" class="form-control form-control-sm custom-input" placeholder="" id="txtLateMin">
                         </div>
                       </div>
                     </div>
                   </div> 
               
                   <div class="col-md-3">
-                    <label class="font-weight-bold">Loại PC</label>
-                    <select name="" id="" class="form-control form-control-sm custom-input select2">
-                      <option value="1">Báo cáo thòi gian ra vào</option>
+                    <label class="font-weight-bold">Loại BC</label>
+                    <select name="" id="selectReportType" class="form-control form-control-sm custom-input select2">
+                      <option value="1">Báo cáo thời gian ra vào</option>
                       <option value="2">Báo cáo làm thêm giờ</option>
                       <option value="3">Báo cáo đi muộn về sớm</option>
                     </select>
