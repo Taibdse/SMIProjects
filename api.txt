@@ -1,0 +1,7 @@
+1. Cham Cong:
+URL: http://115.79.27.219/SMIApi/ChamCong.php
+Parameter:
+ {"fromDate":"2018-07-01", "toDate":"2018-07-30"}
+2. Danh sach tuc thoi
+URL: http://115.79.27.219/SMIApi/DanhSachOnSite.php
+Parameter {"Date":"2018-07-20"}

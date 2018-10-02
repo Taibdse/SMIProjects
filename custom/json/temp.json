@@ -1,0 +1,8 @@
+{
+  "sLogicalCode":100000,
+  "sFullname":"Lê Văn Sơn",
+  "Attendance":
+  [
+    {"dDate":1,"dMonth":9,"dTimeIN":"08:00:10","dTimeOUT":"17:00:05"},{"dDate":27,"dMonth":9,"dTimeIN":"08:23:44","dTimeOUT":"16:23:44"}
+  ]
+}
