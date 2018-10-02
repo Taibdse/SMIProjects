@@ -14,7 +14,8 @@ function setTopSideNav(e){
 
 function setHeightSideNav(){
   let scrollTop = $(window).scrollTop();
+  let headerHeight = $header.height();
   let val = $header.height() + 10;
-  if(scrollTop > $header.height()) $sidenav.css({top: 0});
-  else $sidenav.css({top: val + 'px' });
+  if(scrollTop > headerHeight) $sidenav.css({top: 0});
+  else $sidenav.css({top: headerHeight - scrollTop + 10 + 'px' });
 }
