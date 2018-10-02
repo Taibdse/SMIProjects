@@ -25,9 +25,9 @@ $('.datetimepicker-bootstrap4').datetimepicker({
    format: 'HH:mm'
 });
 
-$('.select2').select2({
+// $('.select2').select2({
   // placeholder: 'Select an option'
-});
+// });
 
 
 $('.btnScrollTop').click(moveTop);
