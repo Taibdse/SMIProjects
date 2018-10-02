@@ -1,9 +1,14 @@
 let $sidenav = $('.side-nav');
 let $mainContent = $('.main-content');
-$('.side-nav .cog').click(toggleSidenav);
+let $header = $('header');
 
-function toggleSidenav(e){
-  let left = $sidenav.css('left');
-  if(left == '0px') $sidenav.css({left: '-260px'});
-  else $sidenav.css({left: '0px'});
+$(window).resize(setTopSideNav);
+
+setTopSideNav();
+
+function setTopSideNav(){
+  let val = $header.height() + 10;
+  console.log(val);
+  $sidenav.css({top: val + 'px' });
+  $mainContent.css({marginTop: '-5px'});
 }

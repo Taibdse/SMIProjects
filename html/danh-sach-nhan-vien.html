@@ -28,7 +28,21 @@
 
   <!-- main view custom css -->
   <link rel="stylesheet" href="../custom/css/main.css">
-
+  <style>
+    .table{
+      margin-top: -10px!important;
+    }
+    .table th, .table td, label{
+      font-size: 0.8em!important;
+    }
+    .table .btn{
+      margin-top: -8px!important;
+    }
+    .form-control{
+      font-size: 0.8em!important;
+    }
+   
+  </style>
   <title>Danh sách nhân viên</title>
 
   <style>
@@ -38,9 +52,11 @@
 
 <body>
 
-  
+<header class="bg-success">
+    <img src="../img/banner4.jpg" alt="" class="img-fluid">
+</header>
 
-  <div class="wrapper mt-3">
+  <div class="wrapper">
     <div class="side-nav">
       <ul class="list-group list-group-custom">
         <li class="list-group-item">
@@ -65,23 +81,15 @@
         </li>
       </ul>
     </div>
-  
     <div class="main-content">
       <div class="container-fluid">
-      <header class="mt-4" >
-          <div class="row">
-            <div class="col-12">
-              <img src="../img/banner-ngan-hang-nha-nuoc.png" alt="" class="img-fluid">
-            </div>
-          </div>
-        </header>
         <div class="row my-3 row-custom">
           <div class="col-12">
             <div class="card card-chamCong">
               <div class="card-header bg-main-color custom-card-header">
-                <h4>
+                <h6>
                   <i class="fa fa-exclamation-triangle"></i> Danh sách nhân viên
-                </h4>
+                </h6>
               </div>
               <div class="card-body custom-card-body">
                 <div class="row">
@@ -324,6 +332,9 @@
 
   <!-- select components -->
   <script src="../custom/js/components/select.component.js"></script>
+
+  <!-- sidenav js -->
+  <script src="../custom/js/sidenav.js"></script>
 
   <!-- danh-sach-nhan-vien js -->
   <script src="../custom/js/danh-sach-nhan-vien.js"></script>

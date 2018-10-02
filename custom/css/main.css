@@ -7,6 +7,9 @@
   --bg-main-color: #000d33;
   --bg-main-color: #212529;
   --bg-main-color: #4A5972;
+  --bg-main-color: #dadee5;
+  --bg-main-color: #343538;
+  /* --bg-main-color: #c7d0ed; */
   /* --bg-main-color: #1e9099; */
   /* --bg-main-color: #4eb256; */
   /* /* --bg-main-color: #635808; */
@@ -20,6 +23,7 @@
 body{
   font-size: 0.9em !important;
   background-color:rgba(0,0,0,0.03);
+  
 }
 
 .wrapper{
@@ -30,7 +34,7 @@ body{
 }
 
 .side-nav{
-  width: 240px;
+  width: 220px;
   color: #ffffff;
   /* transition: all 0.3s ease-in-out; */
   z-index: 10;
@@ -40,7 +44,7 @@ body{
   padding-top: 20px;
   position: fixed;
   left: 0px;
-  top: 0px;
+  top: 110px;
   background-color: var(--bg-main-color);
 }
 
@@ -51,11 +55,12 @@ body{
 
 .list-group-custom .list-group-item a{
   color: white!important;
+  /* color: black; */
 }
 
 .main-content{
-  width: calc(100% - 240px);
-  margin: 0px 240px;
+  width: calc(100% - 220px);
+  margin: 0px 220px;
 }
 
 .side-nav .list-group-custom{
@@ -66,7 +71,6 @@ body{
   background-color:var(--bg-main-color)!important;
   color: white;
 }
-
 .checkbox-custom{
   width: 16px;
   height: 16px;
