@@ -31,14 +31,12 @@ $(async () => {
   });
 
   $('#btnPrintUserList').click(printUserList);
+  showEmployeesListTable();
 
   await SelectComponent.renderSuperDepartment(null, true);
   SelectComponent.renderSuperDepartment('selectSuperDepUpdate', false);
   SelectComponent.renderPosition();
-  showDepListWhenLoad();
-  
-  showEmployeesListTable();
-  console.log(CommonService.removeUnicode('Lê Văn Sơn').toLowerCase())
+  showDepListJustAll();
 
 })
 
@@ -69,11 +67,6 @@ function showDepList(e, className, all){
 function showDepListJustAll(){
   $('.selectDep').html('');
   $('.selectDep').append(`<option value="0">Tất cả</option>`)
-}
-
-function showDepListWhenLoad(){
-  let superDepID = $('#selectSuperDep').val();
-  showDepListJustAll();
 }
 
 function showUpdateModalUser(user){
