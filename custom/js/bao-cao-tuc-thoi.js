@@ -135,7 +135,7 @@ function renderOnsiteReport(data){
 
 function showPagination(data){
   if(!data) return clearPagination();
-  $('#pagingTotal').html(`<strong>Tổng số dòng:</strong> ${data.length}`)
+  $('#pagingTotal').html(`<strong>Tổng số nhân viên:</strong> ${data.length}`)
   $('#pagingControl').pagination({
     dataSource: data,
     pageSize: 10,

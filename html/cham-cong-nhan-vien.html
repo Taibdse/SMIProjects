@@ -40,99 +40,50 @@
 
 <body>
   
-  <nav class="navbar navbar-expand-lg bg-main-color white-text" style="padding-top: 0; padding-bottom: 0">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <i class="fa fa-shield icon-custom" style="color: whitesmoke"></i>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fa fa-bars icon-custom" style="color: white"></i>
-      </button>
-  
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="danh-sach-nhan-vien.html">
-              <i class="fa fa-th-list"></i> Danh sách nhân viên
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="danh-sach-tuc-thoi.html">
-              <i class="fa fa-th-list"></i> Danh sách tức thời
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="cham-cong-nhan-vien.html">
-              <i class="fa fa-star"></i> Báo cáo thời gian ra vào
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="bao-cao-tuc-thoi.html">
-              <i class="fa fa-star"></i> Báo cáo tức thời
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <header class="mt-4" style="padding-left: 40px">
-      <div class="container-fluid">
-          <div class="row">
-            <div class="col-12">
-              <img src="../img/banner-ngan-hang-nha-nuoc.png" alt="" class="img-fluid">
-            </div>
-          </div>
-      </div>
-    </header>
+  <header class="">
+      <img src="../img/banner5.png" alt="" class="img-fluid">
+  </header>
 
   <div class="wrapper mt-3">
     <div class="side-nav">
-        
-        <div class="float-left bg-main-color left-content-treeview pt-3"> 
-          <div id="jstree_demo_div">
-            <ul>
-              <li>Root node 1</li>
-              <li>Root node 2</li>
-              <li>
-                Children
-                <ul>
-                  <li>Child 1</li>
-                  <li>Child 3</li>
-                  <li>GrandChildren
-                    <ul>
-                      <li>GrandChild 1</li>
-                      <li>GrandChild 2</li>
-                      <li>GrandChild 3</li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="float-left right-content-cog">
-          <span class="cog"><i class="fa fa-cog"></i>
-          </span>
-        </div>
+      <ul class="list-group list-group-custom">
+        <li class="list-group-item">
+          <a class="nav-link" href="danh-sach-nhan-vien.html">
+            <i class="fa fa-users"></i> Danh sách nhân viên
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a class="nav-link" href="danh-sach-tuc-thoi.html">
+            <i class="fa fa-th-list"></i> Danh sách tức thời
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a class="nav-link" href="cham-cong-nhan-vien.html">
+            <i class="fa fa-calendar"></i> Báo cáo thời gian ra vào
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a class="nav-link" href="bao-cao-tuc-thoi.html">
+            <i class="fa fa-star"></i> Báo cáo tức thời
+          </a>
+        </li>
+      </ul>
     </div>
-  
     <div class="main-content">
       <div class="container-fluid">
         <div class="row my-3 row-custom">
           <div class="col-12">
             <div class="card card-chamCong">
               <div class="card-header bg-main-color custom-card-header">
-                <h4>
+                <h6>
                   <i class="fa fa-exclamation-triangle"></i> Chấm công nhân viên
-                </h4>
+                </h6>
               </div>
               <div class="card-body custom-card-body">
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label>Vụ</label>
+                      <label class="font-weight-bold">Vụ</label>
                       <select class="form-control form-control-sm selectSuperDep custom-input" id="selectSuperDep">
                         
                       </select>
@@ -140,7 +91,7 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label>Phòng</label>
+                      <label class="font-weight-bold">Phòng</label>
                       <select class="form-control form-control-sm selectDep custom-input" id="selectDep">
                         
                       </select>
